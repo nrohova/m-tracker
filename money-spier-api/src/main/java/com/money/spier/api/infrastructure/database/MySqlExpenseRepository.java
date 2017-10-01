@@ -1,6 +1,7 @@
 package com.money.spier.api.infrastructure.database;
 
 import com.money.spier.api.core.Expense;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -20,8 +21,16 @@ public final class MySqlExpenseRepository implements ExpenseRepository {
 
   @Override
   public int delete(String expenseId) {
+    //TODO: what is better querying with Criteria or single query
     return entityManager.createQuery("delete from Expense where id = :expenseId")
         .setParameter("expenseId", expenseId).executeUpdate();
+  }
+
+  @Override
+  public List<Expense> getExpensesByUserName(String userName) {
+    return entityManager
+        .createQuery("from Expense where user.userName = :userName", Expense.class)
+        .setParameter("userName", userName).getResultList();
   }
 
 }

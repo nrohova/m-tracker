@@ -36,16 +36,12 @@ public class DatabaseConfig {
     LocalContainerEntityManagerFactoryBean entityManagerFactory =
         new LocalContainerEntityManagerFactoryBean();
     entityManagerFactory.setDataSource(dataSource);
-
-    // Classpath scanning of @Component, @Service, etc annotated class
     entityManagerFactory.setPackagesToScan(
         env.getProperty("entitymanager.packagesToScan"));
 
-    // Vendor adapter
     HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
     entityManagerFactory.setJpaVendorAdapter(vendorAdapter);
 
-    // Hibernate properties
     Properties hibernateProperties = new Properties();
     hibernateProperties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
     hibernateProperties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
