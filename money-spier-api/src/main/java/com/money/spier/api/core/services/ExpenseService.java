@@ -1,26 +1,21 @@
-package com.money.spier.api.core.facades;
+package com.money.spier.api.core.services;
 
 import com.money.spier.api.core.Expense;
 import com.money.spier.api.core.User;
-import com.money.spier.api.core.ValidationRules;
 import com.money.spier.api.core.exceptions.NotFoundException;
 import com.money.spier.api.infrastructure.database.ExpenseRepository;
 import com.money.spier.api.infrastructure.database.UserRepository;
 import com.money.spier.api.infrastructure.web.errors.ErrorState;
-
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import javax.validation.ValidationException;
+@Service
+public class ExpenseService {
 
-@Component
-@Scope("prototype")
-public class ExpenseCreateFacade {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(ExpenseCreateFacade.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ExpenseService.class);
 
   @Autowired
   private ExpenseRepository expenseRepository;
@@ -34,10 +29,6 @@ public class ExpenseCreateFacade {
   public void create(String userName, Expense expense) {
     LOGGER.info(String.format("creating new expense for %s", userName));
 
-    if (!validate(expense) || !validate(userName)) {
-      throw new ValidationException();
-    }
-
     User user = userRepository.getByUserName(userName);
     if (user == null) {
       throw new NotFoundException(
@@ -49,13 +40,14 @@ public class ExpenseCreateFacade {
     LOGGER.info("created");
   }
 
-  private boolean validate(Expense expense) {
-    return !errorState.hasErrors();
+  public List<Expense> retrieve(String userName) {
+    LOGGER.info(String.format("retrieving new expense for %s", userName));
+
+    List<Expense> expenses = expenseRepository.getExpensesByUserName(userName);
+
+    LOGGER.info("retrieved");
+
+    return expenses;
   }
 
-  private boolean validate(String userName) {
-    ValidationRules.checkUserName(userName, errorState);
-
-    return !errorState.hasErrors();
-  }
 }
