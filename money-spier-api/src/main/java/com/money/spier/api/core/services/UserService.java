@@ -4,7 +4,6 @@ import com.money.spier.api.core.User;
 import com.money.spier.api.core.exceptions.ConflictException;
 import com.money.spier.api.core.exceptions.NotFoundException;
 import com.money.spier.api.infrastructure.database.UserRepository;
-import com.money.spier.api.infrastructure.web.errors.ErrorState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +16,6 @@ public class UserService {
 
   @Autowired
   private UserRepository repository;
-
-  @Autowired
-  private ErrorState errorState;
 
   public void create(User user) {
     LOGGER.info(String.format("creating user '%s'", user.getUserName()));
@@ -66,7 +62,6 @@ public class UserService {
           String.format("User with username '%s' does not exist", userName));
     }
 
-    //TODO: implement full update
     repository.update(user);
     LOGGER.info("updated");
   }

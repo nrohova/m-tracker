@@ -4,6 +4,7 @@ import com.money.spier.api.core.Expense;
 import com.money.spier.api.core.services.ExpenseService;
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,15 +24,16 @@ public class ExpenseController {
 
   @RequestMapping(method = RequestMethod.POST,
       consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> create(
-      @RequestBody Expense expense, @RequestParam("userName") String username) {
+  public ResponseEntity create(
+      @Valid @RequestBody Expense expense,
+      @RequestParam(value = "user", required = false) String username) {
     expense.setCreationDate(LocalDateTime.now());
     service.create(username, expense);
     return new ResponseEntity(HttpStatus.CREATED);
   }
 
   @RequestMapping(method = RequestMethod.GET)
-  public ResponseEntity<List<Expense>> get(@RequestParam("userName") String username) {
+  public ResponseEntity<List<Expense>> get(@RequestParam("user") String username) {
     return new ResponseEntity<>(service.retrieve(username), HttpStatus.OK);
   }
 

@@ -5,8 +5,8 @@ import com.money.spier.api.core.User;
 import com.money.spier.api.core.exceptions.NotFoundException;
 import com.money.spier.api.infrastructure.database.ExpenseRepository;
 import com.money.spier.api.infrastructure.database.UserRepository;
-import com.money.spier.api.infrastructure.web.errors.ErrorState;
 import java.util.List;
+import javax.validation.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +23,13 @@ public class ExpenseService {
   @Autowired
   private UserRepository userRepository;
 
-  @Autowired
-  private ErrorState errorState;
 
   public void create(String userName, Expense expense) {
     LOGGER.info(String.format("creating new expense for %s", userName));
+
+    if (!validation(userName)) {
+      throw new ValidationException("Invalid username");
+    }
 
     User user = userRepository.getByUserName(userName);
     if (user == null) {
@@ -48,6 +50,11 @@ public class ExpenseService {
     LOGGER.info("retrieved");
 
     return expenses;
+  }
+
+  private boolean validation(String username) {
+    return (username != null) && !username.isEmpty()
+        && (username.length() >= 2) && (username.length() <= 30);
   }
 
 }
