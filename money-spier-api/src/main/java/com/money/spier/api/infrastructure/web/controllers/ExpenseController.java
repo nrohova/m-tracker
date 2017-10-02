@@ -31,9 +31,6 @@ public class ExpenseController {
       consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> create(
       @RequestBody Expense expense, @RequestParam("userName") String username) {
-
-    //TODO: can we pass userName inside the body of request?
-
     expense.setCreationDate(LocalDateTime.now());
     createFacade.create(username, expense);
     return new ResponseEntity(HttpStatus.CREATED);
@@ -41,9 +38,6 @@ public class ExpenseController {
 
   @RequestMapping(method = RequestMethod.GET)
   public ResponseEntity<List<Expense>> get(@RequestParam("userName") String username) {
-    //TODO: should domain model be created to translate for example expense's user to username only?
-    //or create response bean
-    // because now I retrieve looped result
     return new ResponseEntity<>(retrieveFacade.retrieve(username), HttpStatus.OK);
   }
 

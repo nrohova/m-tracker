@@ -31,10 +31,6 @@ public class ExpenseRetrieveFacade {
       throw new ValidationException();
     }
 
-    //TODO: can we get all items from user object? like following:
-    //User user = userRepository.getByUserName(userName);
-    //user.getExpenses()
-
     List<Expense> expenses = expenseRepository.getExpensesByUserName(userName);
 
     LOGGER.info("retrieved");

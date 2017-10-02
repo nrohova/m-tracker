@@ -13,8 +13,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "expense")
 public final class Expense {
-  //TODO: what to do when we have to add new column into existed table?
-
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;

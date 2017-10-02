@@ -31,8 +31,6 @@ public class UserUpdateFacade {
       throw new ValidationException();
     }
 
-    //TODO: implement partial update (patch)
-
     if (repository.getByUserName(userName) == null) {
       throw new NotFoundException(
           String.format("User with username '%s' does not exist", userName));

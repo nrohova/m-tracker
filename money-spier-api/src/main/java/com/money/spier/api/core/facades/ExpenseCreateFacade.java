@@ -50,8 +50,6 @@ public class ExpenseCreateFacade {
   }
 
   private boolean validate(Expense expense) {
-    //TODO: should constraint for foreign key be checked?
-
     return !errorState.hasErrors();
   }
 
