@@ -1,6 +1,7 @@
 package com.money.spier.api.infrastructure.database;
 
 import com.money.spier.api.core.User;
+import java.util.List;
 
 public interface UserRepository {
 
@@ -11,4 +12,6 @@ public interface UserRepository {
   int delete(String userName);
 
   User getByUserName(String userName);
+
+  List<User> getByUserNameOrEmail(String userName, String email);
 }

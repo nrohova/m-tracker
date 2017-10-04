@@ -4,6 +4,7 @@ import com.money.spier.api.core.User;
 import com.money.spier.api.core.exceptions.ConflictException;
 import com.money.spier.api.core.exceptions.NotFoundException;
 import com.money.spier.api.infrastructure.database.UserRepository;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,16 @@ public class UserService {
   public void create(User user) {
     LOGGER.info(String.format("creating user '%s'", user.getUserName()));
 
-    if (repository.getByUserName(user.getUserName()) != null) {
-      throw new ConflictException(
-          String.format("User with username '%s' already exist", user.getUserName()));
+    List<User> users = repository.getByUserNameOrEmail(user.getUserName(), user.getEmail());
+    if (users != null) {
+      if (users.stream().anyMatch(u -> user.getUserName().equals(u.getUserName()))) {
+        throw new ConflictException(
+            String.format("User with username '%s' already exist", user.getUserName()));
+      }
+      if (users.stream().anyMatch(u -> user.getEmail().equals(u.getEmail()))) {
+        throw new ConflictException(
+            String.format("User with email '%s' already exist", user.getEmail()));
+      }
     }
 
     repository.create(user);
@@ -33,7 +41,7 @@ public class UserService {
     LOGGER.info(String.format("retrieving user '%s'", userName));
 
     User user = repository.getByUserName(userName);
-    if (user == null) {
+    if (user == null || !user.isActive()) {
       throw new NotFoundException(
           String.format("User with username '%s' does not exist", userName));
     }
@@ -46,18 +54,21 @@ public class UserService {
   public void delete(String userName) {
     LOGGER.info(String.format("deleting user '%s'", userName));
 
-    if (repository.delete(userName) == 0) {
+    User storedUser = repository.getByUserName(userName);
+    if (storedUser == null || !storedUser.isActive()) {
       throw new NotFoundException(
           String.format("User with username '%s' does not exist", userName));
     }
 
+    repository.delete(userName);
     LOGGER.info("deleted");
   }
 
   public void update(String userName, User user) {
     LOGGER.info(String.format("updating user '%s'", user.getUserName()));
 
-    if (repository.getByUserName(userName) == null) {
+    User storedUser = repository.getByUserName(userName);
+    if (storedUser == null || !storedUser.isActive()) {
       throw new NotFoundException(
           String.format("User with username '%s' does not exist", userName));
     }
