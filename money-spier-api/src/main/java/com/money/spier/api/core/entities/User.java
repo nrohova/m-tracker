@@ -1,9 +1,14 @@
-package com.money.spier.api.core;
+package com.money.spier.api.core.entities;
 
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -40,6 +45,12 @@ public final class User {
 
   @OneToMany(mappedBy="user")
   private Set<Expense> expenses;
+
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(name="permission_user",
+             joinColumns=@JoinColumn(name="permission_name"),
+             inverseJoinColumns=@JoinColumn(name="username"))
+  private List<Permission> permissions;
 
   @Column(name = "active", nullable = false, columnDefinition = "boolean default true")
   private boolean active = true;
@@ -90,5 +101,13 @@ public final class User {
 
   public void setActive(boolean active) {
     this.active = active;
+  }
+
+  public List<Permission> getPermissions() {
+    return permissions;
+  }
+
+  public void setPermissions(List<Permission> permissions) {
+    this.permissions = permissions;
   }
 }

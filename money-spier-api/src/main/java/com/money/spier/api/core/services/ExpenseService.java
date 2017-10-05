@@ -1,7 +1,7 @@
 package com.money.spier.api.core.services;
 
-import com.money.spier.api.core.Expense;
-import com.money.spier.api.core.User;
+import com.money.spier.api.core.entities.Expense;
+import com.money.spier.api.core.entities.User;
 import com.money.spier.api.core.exceptions.NotFoundException;
 import com.money.spier.api.infrastructure.database.ExpenseRepository;
 import com.money.spier.api.infrastructure.database.UserRepository;

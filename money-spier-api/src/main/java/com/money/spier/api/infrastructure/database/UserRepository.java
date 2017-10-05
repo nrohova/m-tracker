@@ -1,6 +1,6 @@
 package com.money.spier.api.infrastructure.database;
 
-import com.money.spier.api.core.User;
+import com.money.spier.api.core.entities.User;
 import java.util.List;
 
 public interface UserRepository {

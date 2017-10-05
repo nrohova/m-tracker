@@ -1,6 +1,6 @@
 package com.money.spier.api.infrastructure.web.controllers;
 
-import com.money.spier.api.core.Expense;
+import com.money.spier.api.core.entities.Expense;
 import com.money.spier.api.core.services.ExpenseService;
 import java.time.LocalDateTime;
 import java.util.List;

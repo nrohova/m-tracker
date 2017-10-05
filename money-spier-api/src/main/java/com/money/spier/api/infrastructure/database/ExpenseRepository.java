@@ -1,6 +1,6 @@
 package com.money.spier.api.infrastructure.database;
 
-import com.money.spier.api.core.Expense;
+import com.money.spier.api.core.entities.Expense;
 import java.util.List;
 
 public interface ExpenseRepository {
