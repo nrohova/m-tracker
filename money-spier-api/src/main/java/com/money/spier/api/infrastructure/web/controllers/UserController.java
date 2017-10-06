@@ -20,7 +20,6 @@ public class UserController {
   @Autowired
   private UserService service;
 
-  //TODO: when new user has the same name as soft deleted one?
   @RequestMapping(value = "/{username}", method = RequestMethod.GET)
   public ResponseEntity<User> retrieve(@PathVariable String username) {
     User user = service.retrieve(username);

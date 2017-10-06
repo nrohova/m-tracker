@@ -5,13 +5,13 @@ import com.money.spier.api.core.entities.User;
 import com.money.spier.api.core.exceptions.NotFoundException;
 import com.money.spier.api.infrastructure.database.ExpenseRepository;
 import com.money.spier.api.infrastructure.database.UserRepository;
-import java.util.List;
-import java.util.UUID;
-import javax.validation.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.validation.ValidationException;
+import java.util.List;
 
 @Service
 public class ExpenseService {
@@ -25,7 +25,7 @@ public class ExpenseService {
   private UserRepository userRepository;
 
 
-  public String create(String userName, Expense expense) {
+  public long create(String userName, Expense expense) {
     LOGGER.info(String.format("creating new expense for %s", userName));
 
     if (!validation(userName)) {
@@ -38,14 +38,11 @@ public class ExpenseService {
           String.format("User with username '%s' does not exist", userName));
     }
 
-    String expenseId = UUID.randomUUID().toString();
     expense.setUser(user);
-    expense.setId(expenseId);
     expenseRepository.create(expense);
-
     LOGGER.info("created");
 
-    return expenseId;
+    return expense.getId();
   }
 
   public List<Expense> retrieve(String userName) {

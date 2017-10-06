@@ -2,6 +2,8 @@ package com.money.spier.api.core.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -15,7 +17,8 @@ import java.time.LocalDateTime;
 @Table(name = "expense")
 public final class Expense {
   @Id
-  private String id;
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long id;
 
   @ManyToOne
   @JoinColumn(name = "user")
@@ -37,13 +40,6 @@ public final class Expense {
   @Column(name = "comment")
   private String comment;
 
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
 
   public User getUser() {
     return user;
@@ -85,4 +81,11 @@ public final class Expense {
     this.amount = amount;
   }
 
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
+  }
 }
