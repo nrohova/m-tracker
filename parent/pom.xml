@@ -15,10 +15,17 @@
     <java.version>1.8</java.version>
     <spring.boot.version>1.5.7.RELEASE</spring.boot.version>
     <mysql.version>6.0.6</mysql.version>
+    <lombok.version>1.16.18</lombok.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+        <scope>provided</scope>
+      </dependency>
       <dependency>
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
