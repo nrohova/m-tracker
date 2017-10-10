@@ -3,7 +3,7 @@ package com.money.spier.api.infrastructure.web.controllers;
 import com.money.spier.api.core.entities.Expense;
 import com.money.spier.api.core.services.ExpenseService;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,7 +34,7 @@ public class ExpenseController {
   }
 
   @RequestMapping(method = RequestMethod.GET)
-  public ResponseEntity<List<Expense>> get(@RequestParam("user") String username) {
+  public ResponseEntity<Set<Expense>> get(@RequestParam("user") String username) {
     return new ResponseEntity<>(service.retrieve(username), HttpStatus.OK);
   }
 

@@ -6,42 +6,61 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "user_permission")
+@Table(name = "permission")
 public class Permission {
   @Id
-  @Column(name = "permission_name")
-  private String permissionName;
+  @Column(name = "name")
+  private String name;
 
-  @Column(name = "write_permission")
-  private boolean writePermission;
+  @Column(name = "expense_write")
+  private boolean expenseWrite;
 
-  @Column(name = "read_permission")
-  private boolean readPermission;
+  @Column(name = "expense_read")
+  private boolean expenseRead;
 
-  public Permission() {
+  @Column(name = "income_write")
+  private boolean incomeWrite;
+
+  @Column(name = "income_read")
+  private boolean incomeRead;
+
+  public String getName() {
+    return name;
   }
 
-  public String getPermissionName() {
-    return permissionName;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public void setPermissionName(String permissionName) {
-    this.permissionName = permissionName;
+  public boolean isExpenseWrite() {
+    return expenseWrite;
   }
 
-  public boolean isReadPermission() {
-    return readPermission;
+  public void setExpenseWrite(boolean expenseWrite) {
+    this.expenseWrite = expenseWrite;
   }
 
-  public void setReadPermission(boolean readPermission) {
-    this.readPermission = readPermission;
+  public boolean isExpenseRead() {
+    return expenseRead;
   }
 
-  public boolean isWritePermission() {
-    return writePermission;
+  public void setExpenseRead(boolean expenseRead) {
+    this.expenseRead = expenseRead;
   }
 
-  public void setWritePermission(boolean writePermission) {
-    this.writePermission = writePermission;
+  public boolean isIncomeWrite() {
+    return incomeWrite;
+  }
+
+  public void setIncomeWrite(boolean incomeWrite) {
+    this.incomeWrite = incomeWrite;
+  }
+
+  public boolean isIncomeRead() {
+    return incomeRead;
+  }
+
+  public void setIncomeRead(boolean incomeRead) {
+    this.incomeRead = incomeRead;
   }
 }

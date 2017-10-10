@@ -1,5 +1,6 @@
 package com.money.spier.api.core.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
@@ -43,12 +44,14 @@ public final class User {
   @Column(name = "email", unique = true)
   private String email;
 
-  @OneToMany(mappedBy="user")
+  @JsonIgnore
+  @OneToMany(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user")
   private Set<Expense> expenses;
-
+  
   @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name="permission_user",
-             joinColumns=@JoinColumn(name="permission_name"),
+  @JoinTable(name="user_permission",
+             joinColumns=@JoinColumn(name="permission"),
              inverseJoinColumns=@JoinColumn(name="username"))
   private List<Permission> permissions;
 

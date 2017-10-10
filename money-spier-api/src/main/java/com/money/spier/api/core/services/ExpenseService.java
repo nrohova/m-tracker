@@ -5,13 +5,12 @@ import com.money.spier.api.core.entities.User;
 import com.money.spier.api.core.exceptions.NotFoundException;
 import com.money.spier.api.infrastructure.database.ExpenseRepository;
 import com.money.spier.api.infrastructure.database.UserRepository;
+import java.util.Set;
+import javax.validation.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.validation.ValidationException;
-import java.util.List;
 
 @Service
 public class ExpenseService {
@@ -45,14 +44,18 @@ public class ExpenseService {
     return expense.getId();
   }
 
-  public List<Expense> retrieve(String userName) {
+  public Set<Expense> retrieve(String userName) {
     LOGGER.info(String.format("retrieving new expense for %s", userName));
 
-    List<Expense> expenses = expenseRepository.getExpensesByUserName(userName);
+    User user = userRepository.getByUserName(userName);
+    if (user == null || !user.isActive()) {
+      throw new NotFoundException(
+          String.format("User with username '%s' does not exist", userName));
+    }
 
     LOGGER.info("retrieved");
 
-    return expenses;
+    return user.getExpenses();
   }
 
   public void delete(String expenseId) {
