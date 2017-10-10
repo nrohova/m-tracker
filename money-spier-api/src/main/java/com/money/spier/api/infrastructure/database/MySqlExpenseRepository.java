@@ -25,11 +25,4 @@ public final class MySqlExpenseRepository implements ExpenseRepository {
         .setParameter("expenseId", expenseId).executeUpdate();
   }
 
-  @Override
-  public List<Expense> getExpensesByUserName(String userName) {
-    return entityManager
-        .createQuery("from Expense  where user.userName = :userName", Expense.class)
-        .setParameter("userName", userName).getResultList();
-  }
-
 }

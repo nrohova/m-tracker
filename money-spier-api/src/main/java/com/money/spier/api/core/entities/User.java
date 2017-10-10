@@ -61,6 +61,13 @@ public final class User {
   @Setter
   private Set<Expense> expenses;
 
+  @JsonIgnore
+  @OneToMany(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user")
+  @Getter
+  @Setter
+  private Set<Income> incomes;
+
   @NotNull
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name="user_permission",

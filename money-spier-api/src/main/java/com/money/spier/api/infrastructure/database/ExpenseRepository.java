@@ -9,6 +9,4 @@ public interface ExpenseRepository {
 
   int delete(String expenseId);
 
-  List<Expense> getExpensesByUserName(String userName);
-
 }
