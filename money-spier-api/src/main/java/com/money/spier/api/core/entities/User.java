@@ -12,6 +12,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import lombok.Getter;
@@ -53,6 +55,13 @@ public final class User {
   @Getter
   @Setter
   private String email;
+
+  @Digits(integer = Integer.MAX_VALUE, fraction = 2)
+  @DecimalMin(value = "0.0")
+  @Column(name = "total", columnDefinition = "double default 0")
+  @Getter
+  @Setter
+  private Double total = 0.0;
 
   @JsonIgnore
   @OneToMany(fetch = FetchType.LAZY)
