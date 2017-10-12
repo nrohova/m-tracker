@@ -1,8 +1,8 @@
 package com.money.spier.api.core.entities;
 
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,15 +12,11 @@ import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
-
-import com.money.spier.api.core.listeners.ExpenseListener;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Table(name = "expense")
-@EntityListeners(ExpenseListener.class)
 public final class Expense {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
