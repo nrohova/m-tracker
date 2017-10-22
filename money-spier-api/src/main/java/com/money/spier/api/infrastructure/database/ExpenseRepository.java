@@ -4,7 +4,7 @@ import com.money.spier.api.core.entities.Expense;
 
 public interface ExpenseRepository {
 
-  void create(Expense expense);
+  long create(Expense expense);
 
   int delete(long expenseId);
 

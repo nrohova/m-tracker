@@ -14,8 +14,10 @@ public final class MySqlExpenseRepository implements ExpenseRepository {
   private EntityManager entityManager;
 
   @Override
-  public void create(Expense expense) {
+  public long create(Expense expense) {
     entityManager.persist(expense);
+
+    return expense.getId();
   }
 
   @Override

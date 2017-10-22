@@ -16,6 +16,9 @@
     <spring.boot.version>1.5.7.RELEASE</spring.boot.version>
     <mysql.version>6.0.6</mysql.version>
     <lombok.version>1.16.18</lombok.version>
+    <liquibase.version>3.5.3</liquibase.version>
+    <spring-test.version>1.5.3.RELEASE</spring-test.version>
+    <h2.version>1.4.192</h2.version>
   </properties>
 
   <dependencyManagement>
@@ -48,6 +51,20 @@
         <artifactId>spring-boot-starter-data-jpa</artifactId>
         <version>${spring.boot.version}</version>
       </dependency>
+      <!--Test dependencies-->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+        <version>${spring-test.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <scope>test</scope>
+        <version>${h2.version}</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 

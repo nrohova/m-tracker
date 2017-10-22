@@ -25,12 +25,11 @@ public class ExpenseController {
 
   @RequestMapping(method = RequestMethod.POST,
       consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity create(
+  public ResponseEntity<Long> create(
       @Valid @RequestBody Expense expense,
       @RequestParam(value = "user", required = false) String username) {
     expense.setCreationDate(LocalDateTime.now());
-    service.create(username, expense);
-    return new ResponseEntity(HttpStatus.CREATED);
+    return new ResponseEntity<>(service.create(username, expense), HttpStatus.CREATED);
   }
 
   @RequestMapping(method = RequestMethod.GET)
