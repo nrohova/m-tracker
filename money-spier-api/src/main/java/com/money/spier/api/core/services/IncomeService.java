@@ -1,10 +1,14 @@
 package com.money.spier.api.core.services;
 
+import com.money.spier.api.core.entities.Balance;
 import com.money.spier.api.core.entities.Income;
 import com.money.spier.api.core.entities.User;
+import com.money.spier.api.core.exceptions.ConflictException;
 import com.money.spier.api.core.exceptions.NotFoundException;
+import com.money.spier.api.infrastructure.database.BalanceRepository;
 import com.money.spier.api.infrastructure.database.IncomeRepository;
 import com.money.spier.api.infrastructure.database.UserRepository;
+import java.math.BigDecimal;
 import java.util.Set;
 import javax.validation.ValidationException;
 import org.slf4j.Logger;
@@ -24,6 +28,9 @@ public class IncomeService {
   private UserRepository userRepository;
 
 
+  @Autowired
+  private BalanceRepository balanceRepository;
+
   public long create(String userName, Income income) {
     LOGGER.info(String.format("creating new income for %s", userName));
 
@@ -39,6 +46,9 @@ public class IncomeService {
 
     income.setUser(user);
     incomeRepository.create(income);
+    balanceRepository.update(
+        addIncomeToBalance(balanceRepository.retrieve(user), income));
+
     LOGGER.info("created");
 
     return income.getId();
@@ -58,15 +68,42 @@ public class IncomeService {
     return user.getIncomes();
   }
 
-  public void delete(String incomeId) {
+  public void delete(long incomeId) {
     LOGGER.info(String.format("deleting income '%s'", incomeId));
 
-    if (incomeRepository.delete(incomeId) == 0) {
+    Income income = incomeRepository.retrieve(incomeId);
+    if (income == null) {
       throw new NotFoundException(
           String.format("Income '%s' does not exist", incomeId));
     }
 
+    User user = income.getUser();
+    balanceRepository.update(
+        subtractIncomeFromBalance(balanceRepository.retrieve(user), income));
+
+    incomeRepository.delete(incomeId);
+
     LOGGER.info("deleted");
+  }
+
+  private Balance addIncomeToBalance(Balance balance, Income income) {
+    BigDecimal total = BigDecimal.valueOf(balance.getTotal());
+    BigDecimal incomeAmount = BigDecimal.valueOf(income.getAmount());
+    balance.setTotal(total.add(incomeAmount).doubleValue());
+    return balance;
+  }
+
+  private Balance subtractIncomeFromBalance(Balance balance, Income income) {
+    BigDecimal total = BigDecimal.valueOf(balance.getTotal());
+    BigDecimal incomeAmount = BigDecimal.valueOf(income.getAmount());
+    double newTotal = total.subtract(incomeAmount).doubleValue();
+
+    if (newTotal < 0) {
+      throw new ConflictException("Cannot delete old income.");
+    }
+
+    balance.setTotal(newTotal);
+    return balance;
   }
 
   private boolean validation(String username) {

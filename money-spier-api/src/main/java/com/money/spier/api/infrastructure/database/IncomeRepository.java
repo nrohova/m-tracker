@@ -6,6 +6,8 @@ public interface IncomeRepository {
 
   void create(Income income);
 
-  int delete(String incomeId);
+  int delete(long incomeId);
+
+  Income retrieve(long incomeId);
 
 }

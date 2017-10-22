@@ -30,6 +30,7 @@ public class IncomeController {
       @RequestParam(value = "user", required = false) String username) {
     income.setCreationDate(LocalDateTime.now());
     service.create(username, income);
+    //TODO: set in body id of expense
     return new ResponseEntity(HttpStatus.CREATED);
   }
 
@@ -38,8 +39,8 @@ public class IncomeController {
     return new ResponseEntity<>(service.retrieve(username), HttpStatus.OK);
   }
 
-  @RequestMapping(method = RequestMethod.DELETE)
-  public ResponseEntity<?> delete(@PathVariable(name = "id") String incomeId) {
+  @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
+  public ResponseEntity<?> delete(@PathVariable(name = "id") long incomeId) {
     service.delete(incomeId);
     return new ResponseEntity(HttpStatus.NO_CONTENT);
   }

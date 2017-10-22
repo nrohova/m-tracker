@@ -1,10 +1,14 @@
 package com.money.spier.api.core.services;
 
+import com.money.spier.api.core.entities.Balance;
 import com.money.spier.api.core.entities.Expense;
 import com.money.spier.api.core.entities.User;
+import com.money.spier.api.core.exceptions.ConflictException;
 import com.money.spier.api.core.exceptions.NotFoundException;
+import com.money.spier.api.infrastructure.database.BalanceRepository;
 import com.money.spier.api.infrastructure.database.ExpenseRepository;
 import com.money.spier.api.infrastructure.database.UserRepository;
+import java.math.BigDecimal;
 import java.util.Set;
 import javax.validation.ValidationException;
 import org.slf4j.Logger;
@@ -23,6 +27,9 @@ public class ExpenseService {
   @Autowired
   private UserRepository userRepository;
 
+  @Autowired
+  private BalanceRepository balanceRepository;
+
 
   public long create(String userName, Expense expense) {
     LOGGER.info(String.format("creating new expense for %s", userName));
@@ -36,6 +43,9 @@ public class ExpenseService {
       throw new NotFoundException(
           String.format("User with username '%s' does not exist", userName));
     }
+
+    balanceRepository.update(
+        subtractExpenseFromBalance(balanceRepository.retrieve(user), expense));
 
     expense.setUser(user);
     expenseRepository.create(expense);
@@ -58,15 +68,41 @@ public class ExpenseService {
     return user.getExpenses();
   }
 
-  public void delete(String expenseId) {
-    LOGGER.info(String.format("deleting expense '%s'", expenseId));
+  public void delete(long expenseId) {
+    LOGGER.info(String.format("deleting expense '%d'", expenseId));
 
-    if (expenseRepository.delete(expenseId) == 0) {
+    Expense expense = expenseRepository.retrieve(expenseId);
+    if (expense == null) {
       throw new NotFoundException(
-          String.format("Expense '%s' does not exist", expenseId));
+          String.format("Expense '%d' does not exist", expenseId));
     }
 
+    User user = expense.getUser();
+    balanceRepository.update(
+        addExpenseToBalance(balanceRepository.retrieve(user), expense));
+    expenseRepository.delete(expenseId);
+
     LOGGER.info("deleted");
+  }
+
+  private Balance addExpenseToBalance(Balance balance, Expense expense) {
+    BigDecimal total = BigDecimal.valueOf(balance.getTotal());
+    BigDecimal expenseAmount = BigDecimal.valueOf(expense.getAmount());
+    balance.setTotal(total.add(expenseAmount).doubleValue());
+    return balance;
+  }
+
+  private Balance subtractExpenseFromBalance(Balance balance, Expense expense) {
+    BigDecimal total = BigDecimal.valueOf(balance.getTotal());
+    BigDecimal expenseAmount = BigDecimal.valueOf(expense.getAmount());
+    double newTotal = total.subtract(expenseAmount).doubleValue();
+
+    if (newTotal < 0) {
+      throw new ConflictException("Insufficient funds on the account.");
+    }
+
+    balance.setTotal(newTotal);
+    return balance;
   }
 
   private boolean validation(String username) {

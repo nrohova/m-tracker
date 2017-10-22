@@ -1,8 +1,10 @@
 package com.money.spier.api.core.services;
 
+import com.money.spier.api.core.entities.Balance;
 import com.money.spier.api.core.entities.User;
 import com.money.spier.api.core.exceptions.ConflictException;
 import com.money.spier.api.core.exceptions.NotFoundException;
+import com.money.spier.api.infrastructure.database.BalanceRepository;
 import com.money.spier.api.infrastructure.database.UserRepository;
 import java.util.List;
 import org.slf4j.Logger;
@@ -17,6 +19,9 @@ public class UserService {
 
   @Autowired
   private UserRepository repository;
+
+  @Autowired
+  private BalanceRepository balanceRepository;
 
   public void create(User user) {
     LOGGER.info(String.format("creating user '%s'", user.getUserName()));
@@ -34,6 +39,7 @@ public class UserService {
     }
 
     repository.create(user);
+    balanceRepository.create(balance(user));
     LOGGER.info("created");
   }
 
@@ -75,6 +81,13 @@ public class UserService {
 
     repository.update(user);
     LOGGER.info("updated");
+  }
+
+  private Balance balance(User user) {
+    Balance balance = new Balance();
+    balance.setUser(user);
+    balance.setTotal(0.0);
+    return balance;
   }
 
 }

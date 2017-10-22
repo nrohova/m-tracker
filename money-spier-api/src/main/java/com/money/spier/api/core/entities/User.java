@@ -12,64 +12,74 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
-@Data
 @Table(name = "user")
 public final class User {
+
   @Id
   @NotNull
   @Length(min = 4, max = 30)
   @Pattern(regexp = "^[_A-Za-z0-9]+$")
   @Column(name = "username")
+  @Getter
+  @Setter
   private String userName;
 
   @NotNull
   @Length(min = 2, max = 15)
   @Pattern(regexp = "^[A-Za-z]+$")
   @Column(name = "first_name")
+  @Getter
+  @Setter
   private String firstName;
 
   @NotNull
   @Length(min = 2, max = 15)
   @Pattern(regexp = "^[A-Za-z]+$")
   @Column(name = "last_name")
+  @Getter
+  @Setter
   private String lastName;
 
   @Email
   @NotNull
   @Column(name = "email", unique = true)
+  @Getter
+  @Setter
   private String email;
-
-  @Digits(integer = Integer.MAX_VALUE, fraction = 2)
-  @DecimalMin(value = "0.0")
-  @Column(name = "total", columnDefinition = "double default 0")
-  private Double total = 0.0;
 
   @JsonIgnore
   @OneToMany(fetch = FetchType.LAZY)
   @JoinColumn(name = "user")
+  @Getter
+  @Setter
   private Set<Expense> expenses;
 
   @JsonIgnore
   @OneToMany(fetch = FetchType.LAZY)
   @JoinColumn(name = "user")
+  @Getter
+  @Setter
   private Set<Income> incomes;
 
   @NotNull
   @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name="user_permission",
-             joinColumns=@JoinColumn(name="permission"),
-             inverseJoinColumns=@JoinColumn(name="username"))
+  @JoinTable(name = "user_permission",
+      joinColumns = @JoinColumn(name = "permission"),
+      inverseJoinColumns = @JoinColumn(name = "username"))
+  @Getter
+  @Setter
   private List<Permission> permissions;
 
   @Column(name = "active", nullable = false, columnDefinition = "boolean default true")
+  @Getter
+  @Setter
   private boolean active = true;
 }

@@ -1,7 +1,6 @@
 package com.money.spier.api.infrastructure.database;
 
 import com.money.spier.api.core.entities.Expense;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -20,9 +19,14 @@ public final class MySqlExpenseRepository implements ExpenseRepository {
   }
 
   @Override
-  public int delete(String expenseId) {
+  public int delete(long expenseId) {
     return entityManager.createQuery("delete from Expense where id = :expenseId")
         .setParameter("expenseId", expenseId).executeUpdate();
+  }
+
+  @Override
+  public Expense retrieve(long expenseId) {
+    return entityManager.find(Expense.class, expenseId);
   }
 
 }

@@ -19,9 +19,14 @@ public final class MySqlIncomeRepository implements IncomeRepository {
   }
 
   @Override
-  public int delete(String incomeId) {
+  public int delete(long incomeId) {
     return entityManager.createQuery("delete from Income where id = :incomeId")
         .setParameter("incomeId", incomeId).executeUpdate();
+  }
+
+  @Override
+  public Income retrieve(long incomeId) {
+    return entityManager.find(Income.class, incomeId);
   }
 
 }

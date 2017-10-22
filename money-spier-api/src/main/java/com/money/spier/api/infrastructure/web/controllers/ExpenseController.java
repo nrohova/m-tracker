@@ -38,8 +38,8 @@ public class ExpenseController {
     return new ResponseEntity<>(service.retrieve(username), HttpStatus.OK);
   }
 
-  @RequestMapping(method = RequestMethod.DELETE)
-  public ResponseEntity<?> delete(@PathVariable(name = "id") String expenseId) {
+  @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
+  public ResponseEntity<?> delete(@PathVariable(name = "id") long expenseId) {
     service.delete(expenseId);
     return new ResponseEntity(HttpStatus.NO_CONTENT);
   }
