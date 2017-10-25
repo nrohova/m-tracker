@@ -1,5 +1,6 @@
 package com.money.spier.api.infrastructure.web.controllers;
 
+import com.money.spier.api.core.aspects.LogController;
 import com.money.spier.api.core.entities.Income;
 import com.money.spier.api.core.services.IncomeService;
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ public class IncomeController {
   @Autowired
   private IncomeService service;
 
+  @LogController
   @RequestMapping(method = RequestMethod.POST,
       consumes = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity create(
