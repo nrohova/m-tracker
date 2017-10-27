@@ -1,5 +1,6 @@
 package com.money.spier.api.core.services;
 
+import com.money.spier.api.core.aspects.Authorized;
 import com.money.spier.api.core.entities.Balance;
 import com.money.spier.api.core.entities.Expense;
 import com.money.spier.api.core.entities.User;
@@ -30,7 +31,7 @@ public class ExpenseService {
   @Autowired
   private BalanceRepository balanceRepository;
 
-
+  @Authorized
   public long create(String userName, Expense expense) {
     LOGGER.info(String.format("creating new expense for %s", userName));
 
