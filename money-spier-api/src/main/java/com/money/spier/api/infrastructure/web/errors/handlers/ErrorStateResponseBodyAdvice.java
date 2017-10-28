@@ -1,6 +1,7 @@
 package com.money.spier.api.infrastructure.web.errors.handlers;
 
 import com.money.spier.api.core.exceptions.ConflictException;
+import com.money.spier.api.core.exceptions.NoPermissions;
 import com.money.spier.api.core.exceptions.NotFoundException;
 import java.util.Collections;
 import java.util.Map;
@@ -19,6 +20,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public final class ErrorStateResponseBodyAdvice extends ResponseEntityExceptionHandler {
+
+  @ExceptionHandler(NoPermissions.class)
+  public ResponseEntity<Map<String, String>> handleNoPermissions(NoPermissions ex) {
+    return new ResponseEntity<>(
+        Collections.singletonMap("message", ex.getMessage()), HttpStatus.FORBIDDEN);
+  }
 
   @ExceptionHandler(ConflictException.class)
   public ResponseEntity<Map<String, String>> handleConflictException(ConflictException ex) {

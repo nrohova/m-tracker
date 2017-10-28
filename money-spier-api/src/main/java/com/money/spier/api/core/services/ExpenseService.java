@@ -1,6 +1,7 @@
 package com.money.spier.api.core.services;
 
 import com.money.spier.api.core.aspects.Authorized;
+import com.money.spier.api.core.aspects.UserName;
 import com.money.spier.api.core.entities.Balance;
 import com.money.spier.api.core.entities.Expense;
 import com.money.spier.api.core.entities.User;
@@ -31,8 +32,8 @@ public class ExpenseService {
   @Autowired
   private BalanceRepository balanceRepository;
 
-  @Authorized
-  public long create(String userName, Expense expense) {
+  @Authorized(writeExpenses = true)
+  public long create(@UserName String userName, Expense expense) {
     LOGGER.info(String.format("creating new expense for %s", userName));
 
     if (!validation(userName)) {
@@ -55,6 +56,7 @@ public class ExpenseService {
     return expense.getId();
   }
 
+  @Authorized(readExpenses = true)
   public Set<Expense> retrieve(String userName) {
     LOGGER.info(String.format("retrieving new expense for %s", userName));
 
