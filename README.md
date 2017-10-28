@@ -1,6 +1,10 @@
 # Database
 Set up MySQL on 3316 port and run it.
 
+# Migration scripts
+`application.properties` contains `flyway.enabled` flag.
+To run migration scripts it should be set to `true`.
+
 # API
 
 ## User
