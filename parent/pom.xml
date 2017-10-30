@@ -20,6 +20,7 @@
     <spring-test.version>1.5.3.RELEASE</spring-test.version>
     <h2.version>1.4.192</h2.version>
     <aspectj.version>1.8.12</aspectj.version>
+    <nimbus.version>5.1</nimbus.version>
   </properties>
 
   <dependencyManagement>
@@ -56,6 +57,11 @@
         <groupId>org.aspectj</groupId>
         <artifactId>aspectjrt</artifactId>
         <version>${aspectj.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.nimbusds</groupId>
+        <artifactId>nimbus-jose-jwt</artifactId>
+        <version>${nimbus.version}</version>
       </dependency>
 
       <!--Test dependencies-->
