@@ -2,7 +2,9 @@ package com.money.spier.api.infrastructure.web;
 
 import java.util.Properties;
 import javax.sql.DataSource;
+import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -51,8 +53,20 @@ public class DatabaseConfig {
     return entityManagerFactory;
   }
 
+  @Bean(initMethod = "migrate")
+  @ConditionalOnProperty("flyway.enabled")
+  public Flyway flyway(DataSource dataSource) {
+    Flyway flyway = new Flyway();
+    flyway.setBaselineOnMigrate(true);
+    flyway.setLocations(env.getProperty("flyway.location"));
+    flyway.setDataSource(dataSource);
+
+    return flyway;
+  }
+
   @Bean
-  public JpaTransactionManager transactionManager(LocalContainerEntityManagerFactoryBean entityManagerFactory) {
+  public JpaTransactionManager transactionManager(
+      LocalContainerEntityManagerFactoryBean entityManagerFactory) {
     JpaTransactionManager transactionManager =
         new JpaTransactionManager();
     transactionManager.setEntityManagerFactory(

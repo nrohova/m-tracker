@@ -21,6 +21,7 @@
     <h2.version>1.4.192</h2.version>
     <aspectj.version>1.8.12</aspectj.version>
     <nimbus.version>5.1</nimbus.version>
+    <flywaydb.version>4.0.3</flywaydb.version>
   </properties>
 
   <dependencyManagement>
@@ -63,6 +64,11 @@
         <artifactId>nimbus-jose-jwt</artifactId>
         <version>${nimbus.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-core</artifactId>
+        <version>${flywaydb.version}</version>
+      </dependency>
 
       <!--Test dependencies-->
       <dependency>
@@ -77,32 +83,28 @@
         <scope>test</scope>
         <version>${h2.version}</version>
       </dependency>
-
     </dependencies>
   </dependencyManagement>
 
   <build>
     <plugins>
       <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-maven-plugin</artifactId>
+        <version>4.0.3</version>
+        <configuration>
+          <driver>com.mysql.cj.jdbc.Driver</driver>
+          <url><![CDATA[jdbc:mysql://localhost:3316/money_spier?autoReconnect=true&useSSL=false&serverTimezone=UTC]]></url>
+          <user>root</user>
+          <password>root</password>
+          <locations>
+            <location>classpath:migrations/</location>
+          </locations>
+        </configuration>
       </plugin>
       <plugin>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <configuration>
-          <configLocation>google_checks.xml</configLocation>
-          <consoleOutput>true</consoleOutput>
-          <failsOnError>true</failsOnError>
-          <violationSeverity>warning</violationSeverity>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>validate</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>

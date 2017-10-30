@@ -53,6 +53,10 @@
         <groupId>com.nimbusds</groupId>
         <artifactId>nimbus-jose-jwt</artifactId>
       </dependency>
+      <dependency>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-core</artifactId>
+      </dependency>
 
       <!--Test dependencies-->
       <dependency>
@@ -65,8 +69,6 @@
         <artifactId>h2</artifactId>
         <scope>test</scope>
       </dependency>
-
-
     </dependencies>
 
 </project>
