@@ -53,7 +53,7 @@ public class AuthorizedAspect {
         try {
           return joinPoint.proceed();
         } catch (Throwable throwable) {
-          throwable.printStackTrace();
+          throw new RuntimeException(throwable);
         }
       }
     }
