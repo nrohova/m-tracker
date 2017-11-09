@@ -60,7 +60,7 @@ public class MySqlExpenseRepositoryTest {
   }
 
   //TODO: does not work
-//  @Test
+  @Test
   public void testDelete() {
     repository.delete(expenseId);
 
