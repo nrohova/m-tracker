@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -54,6 +56,8 @@ public class DatabaseConfig {
   }
 
   @Bean(initMethod = "migrate")
+  @DependsOn(value = "entityManagerFactory")
+//  @Lazy
   @ConditionalOnProperty("flyway.enabled")
   public Flyway flyway(DataSource dataSource) {
     Flyway flyway = new Flyway();
