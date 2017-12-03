@@ -47,7 +47,7 @@ public class UserService {
     LOGGER.info(String.format("retrieving user '%s'", userName));
 
     User user = repository.getByUserName(userName);
-    if (user == null || !user.isActive()) {
+    if (user == null) {
       throw new NotFoundException(
           String.format("User with username '%s' does not exist", userName));
     }
@@ -61,7 +61,7 @@ public class UserService {
     LOGGER.info(String.format("deleting user '%s'", userName));
 
     User storedUser = repository.getByUserName(userName);
-    if (storedUser == null || !storedUser.isActive()) {
+    if (storedUser == null) {
       throw new NotFoundException(
           String.format("User with username '%s' does not exist", userName));
     }
@@ -74,7 +74,7 @@ public class UserService {
     LOGGER.info(String.format("updating user '%s'", user.getUserName()));
 
     User storedUser = repository.getByUserName(userName);
-    if (storedUser == null || !storedUser.isActive()) {
+    if (storedUser == null) {
       throw new NotFoundException(
           String.format("User with username '%s' does not exist", userName));
     }

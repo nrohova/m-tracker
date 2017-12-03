@@ -41,7 +41,7 @@ public class ExpenseService {
     }
 
     User user = userRepository.getByUserName(userName);
-    if (user == null || !user.isActive()) {
+    if (user == null) {
       throw new NotFoundException(
           String.format("User with username '%s' does not exist", userName));
     }
@@ -61,7 +61,7 @@ public class ExpenseService {
     LOGGER.info(String.format("retrieving new expense for %s", userName));
 
     User user = userRepository.getByUserName(userName);
-    if (user == null || !user.isActive()) {
+    if (user == null) {
       throw new NotFoundException(
           String.format("User with username '%s' does not exist", userName));
     }
