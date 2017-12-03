@@ -16,26 +16,22 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "balance")
+@Getter
+@Setter
 public class Balance {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @Getter
-  @Setter
   private long id;
 
   @Digits(integer = Integer.MAX_VALUE, fraction = 2)
   @DecimalMin(value = "0.0")
   @Column(name = "total", columnDefinition = "double default 0")
-  @Getter
-  @Setter
   private Double total = 0.0;
 
   @OneToOne
   @JoinColumn(name = "user")
   @NotNull
-  @Getter
-  @Setter
   private User user;
 
 }

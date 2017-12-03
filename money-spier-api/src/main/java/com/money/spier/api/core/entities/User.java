@@ -21,6 +21,8 @@ import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name = "user")
+@Getter
+@Setter
 public final class User {
 
   @Id
@@ -28,45 +30,33 @@ public final class User {
   @Length(min = 4, max = 30)
   @Pattern(regexp = "^[_A-Za-z0-9]+$")
   @Column(name = "username")
-  @Getter
-  @Setter
   private String userName;
 
   @NotNull
   @Length(min = 2, max = 15)
   @Pattern(regexp = "^[A-Za-z]+$")
   @Column(name = "first_name")
-  @Getter
-  @Setter
   private String firstName;
 
   @NotNull
   @Length(min = 2, max = 15)
   @Pattern(regexp = "^[A-Za-z]+$")
   @Column(name = "last_name")
-  @Getter
-  @Setter
   private String lastName;
 
   @Email
   @NotNull
   @Column(name = "email", unique = true)
-  @Getter
-  @Setter
   private String email;
 
   @JsonIgnore
   @OneToMany(fetch = FetchType.LAZY)
   @JoinColumn(name = "user")
-  @Getter
-  @Setter
   private Set<Expense> expenses;
 
   @JsonIgnore
   @OneToMany(fetch = FetchType.LAZY)
   @JoinColumn(name = "user")
-  @Getter
-  @Setter
   private Set<Income> incomes;
 
   @NotNull
@@ -74,12 +64,8 @@ public final class User {
   @JoinTable(name = "user_permission",
       joinColumns = @JoinColumn(name = "permission"),
       inverseJoinColumns = @JoinColumn(name = "username"))
-  @Getter
-  @Setter
   private List<Permission> permissions;
 
   @Column(name = "active", nullable = false, columnDefinition = "boolean default true")
-  @Getter
-  @Setter
   private boolean active = true;
 }

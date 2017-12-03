@@ -9,30 +9,22 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "permission")
+@Getter
+@Setter
 public class Permission {
   @Id
   @Column(name = "name")
-  @Getter
-  @Setter
   private String name;
 
   @Column(name = "expense_write")
-  @Getter
-  @Setter
   private boolean expenseWrite;
 
   @Column(name = "expense_read")
-  @Getter
-  @Setter
   private boolean expenseRead;
 
   @Column(name = "income_write")
-  @Getter
-  @Setter
   private boolean incomeWrite;
 
   @Column(name = "income_read")
-  @Getter
-  @Setter
   private boolean incomeRead;
 }
